@@ -8,12 +8,17 @@ const User =db.users
 const register = async( req,res, next) =>{
         const {firstname, email, password,lastname,phone,gender,dateofbirth,address } = req.body
 
-        if(!firstname || !email  || !password){
+        if(!firstname || !phone  || !password){
             res.status(StatusCodes.BAD_REQUEST).json({ 
                 msg:"Please Provide all values"
              })
         }
-        const userAlreadyExists  = await User.findOne({where:{email:email}})
+        if(phone.length !=11){
+            res.status(StatusCodes.BAD_REQUEST).json({ 
+                msg:"Invalid Phone Number"
+             })
+        }
+        const userAlreadyExists  = await User.findOne({where:{phone:phone}})
         if(userAlreadyExists){
             res.status(StatusCodes.BAD_REQUEST).json({ 
                msg:"User already exist!!"
@@ -22,30 +27,24 @@ const register = async( req,res, next) =>{
         const user =  await  User.create({firstname, email, password,lastname,phone,gender,dateofbirth,address })
 
         const token =   user.createJWT()
-        res.status(StatusCodes.CREATED).json({ 
-             user:{
-               email:user.email,
-               password:user.password,
-               firstname:user.firstname
-             }
-            ,
-            token,
-            
-         })
+        res.status(StatusCodes.CREATED).json({user,token})
 }
 
 
 // loging functionality--------------------------------------------
 const login = async( req,res) =>{
-    const {email,password }  = req.body;
-    if(!email || !password){
+    const {phone,password }  = req.body;
+    if(!phone || !password){
         res.status(StatusCodes.BAD_REQUEST).json({ 
             msg:"Please Provide all values"
       })
     }
-    const user  = await User.findOne({where:{email,password}})
+    const user  = await User.findOne({where:{phone,password}})
     if(!user){
-        throw new UnAuthenticatedError('Invalid Credentials')
+        res.status(StatusCodes.BAD_REQUEST).json({ 
+            msg:"Invalid Credentials"
+      })
+      
     }
     // const isPasswordCorrect  =  await user.comparePassword(password)
     // if(!isPasswordCorrect){

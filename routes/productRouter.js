@@ -1,17 +1,16 @@
  const productController  =require('../controllers/productController.js');
  const reviewController  =require('../controllers/reviewController');
- productController.upload
-
+const Auth = require('../middleware/auth')
  const router  = require('express').Router()
 // product router
  router.post('/addproduct', productController.upload, productController.addProduct)
  router.get('/allproducts', productController.getAllProducts)
  router.get('/published', productController.getPublishedProduct)
  router.get('/singleproduct/:id', productController.getOneProduct)
- router.put('/updateproudct/:id', productController.updateProduct)
+ router.put('/updateproduct/:id',productController.upload, productController.updateProduct)
  router.delete('/deleteproduct/:id', productController.deleteProduct)
-
-
+// adding product image
+router.post('/addproductimage',productController.slide_photo,productController.addProductImage)
 
 //  review router
 router.post('/addReview/:productid',reviewController.addReview)

@@ -45,6 +45,8 @@ db.orders = require('./orderModel.js')(sequelize,DataTypes)
 db.paymentdetails = require('./paymentdetailsModel.js')(sequelize,DataTypes)
 db.orderitems = require('./orderitemModel.js')(sequelize,DataTypes)
 db.productinventorys = require('./productinventoryModel.js')(sequelize,DataTypes)
+db.productimages = require('./productimageModel.js')(sequelize,DataTypes)
+db.admins = require('./adminModel.js')(sequelize,DataTypes)
 
 db.sequelize.sync({
     force:false
@@ -78,7 +80,7 @@ db.users.hasMany(db.orders,{
 
 db.orders.belongsTo(db.users,{
     foreignKey:'user_id',
-    as:'order'
+    as:'user'
 })
 
 
@@ -93,6 +95,27 @@ db.orderitems.belongsTo(db.orders,{
     as:'order'
 })
 
+// one to many relation between product and image
+db.products.hasMany(db.productimages,{
+    foreignKey:'product_id',
+    as:'productimage'
+})
+
+db.productimages.belongsTo(db.products,
+    {
+        foreignKey:'product_id',
+        as:'product'
+    })
+// payment and order relationship
+db.orders.hasMany(db.paymentdetails,{
+    foreignKey:'order_id',
+    as:'paymentdetails'
+})
+
+db.paymentdetails.belongsTo(db.orders,{
+    foreignKey:'order_id',
+    as:'order'
+})
 
 
 module.exports = db

@@ -2,7 +2,7 @@
 module.exports =  (sequalize, DataTypes) =>{
     const Orderitem = sequalize.define('orderitem',{
         order_id:{
-            type:DataTypes.STRING,
+            type:DataTypes.INTEGER,
             allowNull:false
         },
         product_id:{

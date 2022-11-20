@@ -18,7 +18,7 @@ module.exports =  (sequalize, DataTypes) =>{
             allowNull:true
         },
         shipping_address_id:{
-            type: DataTypes.STRING,
+            type:DataTypes.STRING,
             allowNull:true
         },
         payment_method:{

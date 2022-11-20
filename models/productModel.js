@@ -2,7 +2,7 @@
 
 module.exports =  (sequalize, DataTypes) =>{
     const Product = sequalize.define('product',{
-        title:{
+        name:{
             type:DataTypes.STRING,
             allowNull:false
         },
@@ -19,12 +19,16 @@ module.exports =  (sequalize, DataTypes) =>{
             type:DataTypes.BOOLEAN
         },
         category:{
-            type:DataTypes.INTEGER,
+            type:DataTypes.STRING,
             allowNull:false
         },
         image:{
             type:DataTypes.STRING
-        }
+        },
+        featured:{
+            type:DataTypes.BOOLEAN,
+            defaultValue:0
+        },
 
     })
 
